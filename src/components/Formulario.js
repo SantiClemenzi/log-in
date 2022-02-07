@@ -1,13 +1,37 @@
 import React, {useState} from "react";
 import styled from "styled-components";
+// importamos db  y demas funciones
+import db from './../firebase/firebase-config';
+import { collection, addDoc } from "firebase/firestore";
 
 const Formulario = () => {
     const [nombre, cambiarNombre] = useState('');
     const [email, cambiarEmail] = useState('');
+
+    const onSubmit = async (e) =>{
+        e.preventDefault();
+
+        // utilizamos try para que nos notifique si hay error
+        try{
+            // await es para ejecutar primero el insert a la db
+            await addDoc(collection(db, 'usuario'), {
+                nombre: nombre,
+                email: email
+            });
+            console.log('se registro correctamente');
+            //catch para obtener el error
+        }catch(error){
+            console.log('Ha ocurrido un error '+ error);
+        }
+
+        // limpiamos los inputs
+        cambiarNombre('');
+        cambiarEmail('');
+    }
     return ( 
-        <form action="">
+        <form action="" onSubmit={onSubmit}>
             <Input name="nombre" type="text" placeholder="nombre" value={nombre} onChange={(e)=>cambiarNombre(e.target.value)}/>
-            <Input name="email" type="email" placeholder="nombre@gmail.com" value={email} onChange={(e)=>cambiarEmail(e.target.value)}/>
+            <Input name="email" type="email" placeholder="nombre@correo.com" value={email} onChange={(e)=>cambiarEmail(e.target.value)}/>
             <Boton type="submit">Agregar</Boton>
         </form>
      );
