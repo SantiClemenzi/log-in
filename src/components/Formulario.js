@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import styled from "styled-components";
-// importamos db  y demas funciones
+// db  y demas funciones
 import db from './../firebase/firebase-config';
 import { collection, addDoc } from "firebase/firestore";
 
