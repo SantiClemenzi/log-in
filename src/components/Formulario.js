@@ -30,8 +30,8 @@ const Formulario = () => {
     }
     return ( 
         <form action="" onSubmit={onSubmit}>
-            <Input name="nombre" type="text" placeholder="nombre" value={nombre} onChange={(e)=>cambiarNombre(e.target.value)}/>
-            <Input name="email" type="email" placeholder="nombre@correo.com" value={email} onChange={(e)=>cambiarEmail(e.target.value)}/>
+            <Input name="nombre" type="text" placeholder="nombre" value={nombre} onChange={(e)=>cambiarNombre(e.target.value)} required/>
+            <Input name="email" type="email" placeholder="nombre@correo.com" value={email} onChange={(e)=>cambiarEmail(e.target.value)} required/>
             <Boton type="submit">Agregar</Boton>
         </form>
      );
@@ -66,5 +66,5 @@ const Boton = styled.button`
     &:hover {
         background: #C4C4C4;
     }
-`;
+ required`;
 export default Formulario;

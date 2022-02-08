@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import styled from "styled-components";
 
-const Contacto = () => {
+const Contacto = ({id, nombre, correo}) => {
     const [estadoContacto, cambiarEstadoContacto]= useState(false)
     return ( 
     <ContenedorContacto>
@@ -20,9 +20,9 @@ const Contacto = () => {
              <Boton type="submit">Actualizar</Boton>
          </form>
          :
-         <>
-            <Nombre>Juan</Nombre>
-            <Correo>juan@gmial.com</Correo>
+         <> 
+            <Nombre>{nombre}</Nombre>
+            <Correo>{correo}</Correo>
             <Boton onClick={()=>cambiarEstadoContacto(!estadoContacto)}>Editar</Boton>
             <Boton>Borrar</Boton>
          </>   
