@@ -1,21 +1,61 @@
 import React, {useState} from "react";
 import styled from "styled-components";
+// db y demas funciones
+import db from "../firebase/firebase-config";
+import { doc, deleteDoc, updateDoc} from "firebase/firestore";
 
 const Contacto = ({id, nombre, correo}) => {
     const [estadoContacto, cambiarEstadoContacto]= useState(false)
+
+    const [nuevoNombre, cambiarNuevoNombre] = useState(nombre);
+    const [nuevoCorreo, cambiarNuevoCorreo] = useState(correo);
+
+    const actualizarContacto = async (e) =>{
+        // evitamos que la pagina se refresque
+        e.preventDefault();
+
+        // actualizamos los datos
+        try{
+            await updateDoc(doc(db, 'usuario', id), {
+                nombre: nuevoNombre,
+                email: nuevoCorreo
+            });
+        }catch(error){
+            console.log('Ha ocurrido un error al actualizar');
+            console.log(error);
+        }
+
+        // ocultamos los inputs
+        cambiarEstadoContacto(!estadoContacto);
+    }
+
+    const borrarContacto = async () =>{
+        // borramos los datos
+        try{
+            await deleteDoc(doc(db, 'usuario', id));
+        }catch(error){
+            console.log('Ha ocurrido un error al actualizar');
+            console.log(error);
+        }
+    }
+
     return ( 
     <ContenedorContacto>
         {estadoContacto?
-         <form action="">
+         <form action="" onSubmit={actualizarContacto}>
              <Input
                 type="text"
                 name="nombre"
                 placeholder="nombre"
+                value={nuevoNombre}
+                onChange={(e)=>{cambiarNuevoNombre(e.target.value)}}
              />
              <Input
                 type="email"
                 name="email"
                 placeholder="nombre@correo.com"
+                value={nuevoCorreo}
+                onChange={(e)=>{cambiarNuevoCorreo(e.target.value)}}
              />
              <Boton type="submit">Actualizar</Boton>
          </form>
@@ -24,7 +64,7 @@ const Contacto = ({id, nombre, correo}) => {
             <Nombre>{nombre}</Nombre>
             <Correo>{correo}</Correo>
             <Boton onClick={()=>cambiarEstadoContacto(!estadoContacto)}>Editar</Boton>
-            <Boton>Borrar</Boton>
+            <Boton onClick={()=>borrarContacto(id)}>Borrar</Boton>
          </>   
         }
     </ContenedorContacto> );
